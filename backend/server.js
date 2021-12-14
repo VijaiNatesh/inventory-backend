@@ -13,7 +13,9 @@ app.use(cors())
 
 
 app.use(express.json())
-
+app.get('/', (req,res) => {
+  res.send("Backend of Inventory")
+})
 app.use("/api/purchase", purchaseRoute)
 app.use("/api/user", userRoute)
 app.use("/api/bill", billRoute)
