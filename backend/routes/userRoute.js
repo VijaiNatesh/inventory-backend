@@ -41,12 +41,54 @@ userRoute.post('/login', asyncHandler(async (req, res) => {
     }
 }))
 
-userRoute.get('/profile/:id', asyncHandler(async (req, res) => {
-    const profile = await User.findById(req.params.id).populate('purchase', 'itemName productKey quantity unitCost unitPrice', Purchase)
-    res.json(profile)
+userRoute.get('/purchase/:id', asyncHandler(async (req, res) => {
+    const purchase = await User.aggregate([
+        {
+            $match: {
+                _id: new ObjectId(req.params.id)
+            }
+        },
+        {
+            $lookup:
+                {
+                    from: "purchases",
+                    localField: "_id",
+                    foreignField: "createdBy",
+                    as: "purchase"
+                }
+        },
+        {
+            $unwind: "$purchase"
+        },
+        {
+
+            $addFields:
+                {
+                    "purchaseItemName": "$purchase.itemName",
+                    "purchaseUnitPrice": "$purchase.unitPrice",
+                    "purchaseQuantity": "$purchase.quantity",
+                    "purchaseProductKey": "$purchase.productKey",
+                    "purchaseUnitCost": "$purchase.unitCost",
+                    "productId": "$purchase._id"
+                }
+        },        
+        {
+            $project:
+                {
+                    purchaseItemName: 1,
+                    purchaseUnitPrice: 1,
+                    purchaseQuantity: 1,
+                    purchaseProductKey: 1,
+                    purchaseUnitCost: 1,
+                    productId: 1                 
+
+                }
+        }
+    ])
+    res.json(purchase)
 }))
 
-userRoute.get('/bill/:id', asyncHandler(async (req, res) => {
+userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
     const bill = await User.aggregate([
         {
             $match: {
@@ -66,7 +108,6 @@ userRoute.get('/bill/:id', asyncHandler(async (req, res) => {
             $unwind: "$bill"
         },
         {
-
             $addFields:
                 {
                     "billProductKey": "$bill.productKey",
@@ -79,45 +120,42 @@ userRoute.get('/bill/:id', asyncHandler(async (req, res) => {
                     from: "purchases",
                     localField: "billProductKey",
                     foreignField: "productKey",
-                    as: "purchase"
+                    as: "billDetails"
                 }
         },
         {
-            $unwind: "$purchase"
+            $unwind: "$billDetails"
         },
         {
-
             $addFields:
                 {
-                    "purchaseItemName": "$purchase.itemName",
-                    "purchaseUnitPrice": "$purchase.unitPrice",
-                    "purchaseQuantity": "$purchase.quantity",
-                    "purchaseProductKey": "$purchase.productKey",
-                    "purchaseUnitCost" : "$purchase.unitCost"
+                    "billItemName": "$billDetails.itemName",
+                    "billUnitPrice": "$billDetails.unitPrice",
+                    "purchaseQuantity": "$billDetails.quantity"
                 }
         },
         {
             $project:
-            {
-                purchaseItemName: 1,
-                billProductKey: 1,
-                billQuantity: 1,
-                purchaseUnitPrice: 1,
-                purchaseQuantity: 1,
-                purchaseProductKey: 1,
-                purchaseUnitCost: 1,
-                availableQty: {
-                    $subtract: ["$purchaseQuantity", "$billQuantity"]
-                },
-                total: {
-                    $multiply: ["$billQuantity", "$purchaseUnitPrice"]
+                {
+                    billItemName: 1,
+                    billProductKey: 1,
+                    billQuantity: 1,
+                    billUnitPrice: 1,
+                    purchaseQuantity: 1,
+                    total: {
+                        $multiply: ["$billQuantity", "$billUnitPrice"]
+                    },
+                    qtyAvailable: {
+                        $subtract: ["$purchaseQuantity", "$billQuantity"]
+                    }
                 }
-            }
         }
-
     ])
     res.json(bill)
 }))
+
+
+module.exports = userRoute
 
 
 module.exports = userRoute

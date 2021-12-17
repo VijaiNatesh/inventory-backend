@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const conn = mongoose.createConnection("mongodb+srv://vijay:vijay123123@cluster0.76a7k.mongodb.net/inventory-bill-app");
+const conn = mongoose.createConnection("process.env.MONGO_URI");
 
 
 
