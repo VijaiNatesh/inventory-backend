@@ -158,6 +158,6 @@ userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
 module.exports = userRoute
 
 
-module.exports = userRoute
+
 
 
