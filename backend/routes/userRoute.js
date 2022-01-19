@@ -80,13 +80,14 @@ userRoute.get('/purchase/:id', asyncHandler(async (req, res) => {
                     purchaseQuantity: 1,
                     purchaseProductKey: 1,
                     purchaseUnitCost: 1,
-                    productId: 1                 
+                    productId: 1              
 
                 }
         }
     ])
     res.json(purchase)
 }))
+
 
 userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
     const bill = await User.aggregate([
@@ -111,7 +112,9 @@ userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
             $addFields:
                 {
                     "billProductKey": "$bill.productKey",
-                    "billQuantity": "$bill.quantity"
+                    "billQuantity": "$bill.quantity",
+                    "billId" : "$bill._id"
+                                     
                 }
         },
         {
@@ -131,15 +134,15 @@ userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
                 {
                     "billItemName": "$billDetails.itemName",
                     "billUnitPrice": "$billDetails.unitPrice",
-                    "purchaseQuantity": "$billDetails.quantity"
+                    "purchaseQuantity": "$billDetails.quantity"                    
                 }
         },
         {
             $project:
-                {
+                {                   
                     billItemName: 1,
                     billProductKey: 1,
-                    billQuantity: 1,
+                    billQuantity: 1,                   
                     billUnitPrice: 1,
                     purchaseQuantity: 1,
                     total: {
@@ -147,7 +150,8 @@ userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
                     },
                     qtyAvailable: {
                         $subtract: ["$purchaseQuantity", "$billQuantity"]
-                    }
+                    },
+                    billId: 1
                 }
         }
     ])
