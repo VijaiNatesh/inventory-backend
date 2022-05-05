@@ -180,7 +180,7 @@ userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
 
 userRoute.get('/purchase/:id', async(req, res) => {
     const purchase = await Purchase.find()
-    res.json("Hello")
+    res.json(purchase)
 })
 
 
