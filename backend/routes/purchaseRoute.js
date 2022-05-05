@@ -1,6 +1,6 @@
 const express = require('express')
 const asyncHandler = require("express-async-handler")
-const Purchase = require("../models/Purchase")
+const Purchase = require('../models/Purchase')
 const User = require('../models/User')
 const purchaseRoute = express.Router()
 

@@ -1,7 +1,4 @@
 const mongoose = require('mongoose')
-const conn = mongoose.createConnection(process.env.MONGO_URI);
-
-
 
 
 const PurchaseSchema = new mongoose.Schema({
@@ -42,6 +39,6 @@ const PurchaseSchema = new mongoose.Schema({
 
 
 
-const Purchase = conn.model("Purchase", PurchaseSchema)
+const Purchase = mongoose.model("Purchase", PurchaseSchema)
 
 module.exports = Purchase

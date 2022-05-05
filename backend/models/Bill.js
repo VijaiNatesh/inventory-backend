@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const conn = mongoose.createConnection(process.env.MONGO_URI);
+
 const Purchase = require('../models/Purchase')
 
 const BillSchema = new mongoose.Schema({ 
@@ -27,6 +27,6 @@ const BillSchema = new mongoose.Schema({
 })
 
 
-const Bill = conn.model('Bill', BillSchema)
+const Bill = mongoose.model('Bill', BillSchema)
 
 module.exports = Bill

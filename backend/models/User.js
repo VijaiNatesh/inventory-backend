@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const conn = mongoose.createConnection(process.env.MONGO_URI);
+
 const bcrypt = require('bcryptjs')
 
 
@@ -44,6 +44,6 @@ UserSchema.methods.isPasswordMatch = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
   };
 
-const User = conn.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema)
 
 module.exports = User

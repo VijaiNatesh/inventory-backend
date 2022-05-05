@@ -1,8 +1,6 @@
 require('dotenv').config();
 const cors = require('cors')
 const express = require('express')
-require('./models/Bill')
-require('./models/Purchase')
 require('./config/dbConnect')();
 const purchaseRoute = require("./routes/purchaseRoute")
 const billRoute = require("./routes/billRoute")
