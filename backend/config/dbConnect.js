@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dbConnect = async () => {
   try {
    await mongoose.connect(
-     'mongodb+srv://vijay:vijay123123@cluster0.76a7k.mongodb.net/inventory-bill-app',
+     'process.env.MONGO_URL',
       {
         useFindAndModify: true,
         useUnifiedTopology: true,
