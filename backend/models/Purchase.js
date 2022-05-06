@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const conn = mongoose.createConnection("process.env.MONGO_URL")
+const conn = mongoose.createConnection(process.env.MONGO_URL)
 
 const PurchaseSchema = new mongoose.Schema({
     itemName: {
