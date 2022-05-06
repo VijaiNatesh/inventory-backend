@@ -41,72 +41,72 @@ userRoute.post('/login', asyncHandler(async (req, res) => {
     }
 }))
 
-// userRoute.get('/purchase/:id', asyncHandler(async (req, res) => {
-//     const purchase = await User.aggregate([
-//         {
-//             $match: {
-//                 _id: new ObjectId(req.params.id)
-//             }
-//         },
-//         {
-//             $lookup:
-//                 {
-//                     from: "purchases",
-//                     localField: "_id",
-//                     foreignField: "createdBy",
-//                     as: "purchase"
-//                 }
-//         },
-//         {
-//             $unwind: "$purchase"
-//         },
-//         {
+userRoute.get('/purchase/:id', asyncHandler(async (req, res) => {
+    const purchase = await User.aggregate([
+        {
+            $match: {
+                _id: new ObjectId(req.params.id)
+            }
+        },
+        {
+            $lookup:
+                {
+                    from: "purchases",
+                    localField: "_id",
+                    foreignField: "createdBy",
+                    as: "purchase"
+                }
+        },
+        {
+            $unwind: "$purchase"
+        },
+        {
 
-//             $addFields:
-//                 {
-//                     "purchaseItemName": "$purchase.itemName",
-//                     "purchaseUnitPrice": "$purchase.unitPrice",
-//                     "purchaseQuantity": "$purchase.quantity",
-//                     "purchaseProductKey": "$purchase.productKey",
-//                     "purchaseUnitCost": "$purchase.unitCost",
-//                     "productId": "$purchase._id"
-//                 }
-//         },
-//         {
-//             $lookup:
-//                 {
-//                     from: "bills",
-//                     localField: "purchaseProductKey",
-//                     foreignField: "productKey",
-//                     as: "bill"
-//                 }
-//         },
-//         {
-//             $unwind: "$bill"
-//         },
-//         {
-//             $addFields:
-//                 {
-//                     "billQuantity": "$bill.quantity"
-//                 }
-//         },
-//         {
-//             $project:
-//                 {
-//                     purchaseItemName: 1,
-//                     purchaseUnitPrice: 1,
-//                     finalQuantity: {
-//                         $subtract: ["$purchaseQuantity", "$billQuantity"]
-//                     },
-//                     purchaseProductKey: 1,
-//                     purchaseUnitCost: 1,
-//                     productId: 1
+            $addFields:
+                {
+                    "purchaseItemName": "$purchase.itemName",
+                    "purchaseUnitPrice": "$purchase.unitPrice",
+                    "purchaseQuantity": "$purchase.quantity",
+                    "purchaseProductKey": "$purchase.productKey",
+                    "purchaseUnitCost": "$purchase.unitCost",
+                    "productId": "$purchase._id"
+                }
+        },
+        {
+            $lookup:
+                {
+                    from: "bills",
+                    localField: "purchaseProductKey",
+                    foreignField: "productKey",
+                    as: "bill"
+                }
+        },
+        {
+            $unwind: "$bill"
+        },
+        {
+            $addFields:
+                {
+                    "billQuantity": "$bill.quantity"
+                }
+        },
+        {
+            $project:
+                {
+                    purchaseItemName: 1,
+                    purchaseUnitPrice: 1,                   
+                    purchaseProductKey: 1,
+                    purchaseUnitCost: 1,
+                    finalQuantity: {
+                    $subtract: ["$purchaseQuantity", "$billQuantity"]
+                    },
+                    productId: 1
 
-//                 }
-//         }
-//     ])
-//     res.json(purchase)
-// }))
+                }
+        }
+    ])
+    res.json(purchase)
+}))
 
 
 userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
@@ -178,10 +178,7 @@ userRoute.get("/bill/:id", asyncHandler(async (req, res) => {
     res.json(bill)
 }))
 
-userRoute.get('/purchase/:id', async(req, res) => {
-    const purchase = await Purchase.find()
-    res.json(purchase)
-})
+
 
 
 

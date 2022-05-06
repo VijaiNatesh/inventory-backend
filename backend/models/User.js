@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const conn = mongoose.createConnection("mongodb+srv://vijay:vijay123123@cluster0.76a7k.mongodb.net/inventory-bill-app")
 const bcrypt = require('bcryptjs')
 
 
@@ -44,6 +44,6 @@ UserSchema.methods.isPasswordMatch = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
   };
 
-const User = mongoose.model('User', UserSchema)
+const User = conn.model('User', UserSchema)
 
 module.exports = User

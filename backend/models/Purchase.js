@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const conn = mongoose.createConnection("mongodb+srv://vijay:vijay123123@cluster0.76a7k.mongodb.net/inventory-bill-app")
 
 const PurchaseSchema = new mongoose.Schema({
     itemName: {
@@ -39,6 +39,6 @@ const PurchaseSchema = new mongoose.Schema({
 
 
 
-const Purchase = mongoose.model("Purchase", PurchaseSchema)
+const Purchase = conn.model("Purchase", PurchaseSchema)
 
 module.exports = Purchase

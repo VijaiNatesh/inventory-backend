@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const conn = mongoose.createConnection("mongodb+srv://vijay:vijay123123@cluster0.76a7k.mongodb.net/inventory-bill-app")
 const Purchase = require('../models/Purchase')
 
 const BillSchema = new mongoose.Schema({ 
@@ -27,6 +27,6 @@ const BillSchema = new mongoose.Schema({
 })
 
 
-const Bill = mongoose.model('Bill', BillSchema)
+const Bill = conn.model('Bill', BillSchema)
 
 module.exports = Bill

@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
 const dbConnect = async () => {
-  
   try {
    await mongoose.connect(
-    'process.env.MONGO_URI',
+     'mongodb+srv://vijay:vijay123123@cluster0.76a7k.mongodb.net/inventory-bill-app',
       {
         useFindAndModify: true,
         useUnifiedTopology: true,
@@ -21,4 +20,3 @@ const dbConnect = async () => {
 };
 
 module.exports = dbConnect;
-
